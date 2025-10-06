@@ -1,0 +1,321 @@
+/**
+ * AdminLayout.css
+ * Estructura del layout: Sidebar, AppBar, Main Content
+ * Incluye responsive design para móviles
+ */
+
+/* === CONTENEDOR PRINCIPAL === */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+
+/* === SIDEBAR === */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--color-sidebar-bg);
+  backdrop-filter: saturate(140%) var(--blur-md);
+  border-right: 1px solid var(--color-border);
+  z-index: var(--z-index-fixed);
+  overflow-y: auto;
+  transition: transform var(--transition-normal);
+}
+
+.admin-sidebar__header {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-sidebar__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.admin-sidebar__menu {
+  padding: var(--spacing-md) var(--spacing-sm);
+}
+
+.admin-sidebar__menu-item {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-md);
+  margin: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.admin-sidebar__menu-item:hover {
+  background-color: var(--color-hover);
+  color: var(--color-text-light);
+}
+
+.admin-sidebar__menu-item--active {
+  background-color: var(--color-selected);
+  color: var(--color-text-light);
+}
+
+.admin-sidebar__menu-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.admin-sidebar__menu-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* === APPBAR (HEADER) === */
+.admin-appbar {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  height: var(--appbar-height);
+  background-color: var(--color-appbar-bg);
+  backdrop-filter: saturate(140%) var(--blur-md);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-index-sticky);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-lg);
+  transition: left var(--transition-normal);
+}
+
+.admin-appbar__left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.admin-appbar__menu-toggle {
+  display: none; /* Mostrar solo en móvil */
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-light);
+  transition: background-color var(--transition-fast);
+  margin-right: var(--spacing-md);
+}
+
+.admin-appbar__menu-toggle:hover {
+  background-color: var(--color-hover);
+}
+
+.admin-appbar__brand {
+  display: flex;
+  flex-direction: column;
+  margin-right: var(--spacing-xl);
+}
+
+.admin-appbar__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-light);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.admin-appbar__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+.admin-appbar__right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.admin-appbar__search {
+  position: relative;
+  width: 300px;
+}
+
+.admin-appbar__search-input {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) 40px;
+  border: none;
+  border-radius: var(--border-radius-xl);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  transition: box-shadow var(--transition-fast);
+}
+
+.admin-appbar__search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent);
+}
+
+.admin-appbar__search-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.admin-appbar__search-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.admin-appbar__icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+
+.admin-appbar__icon-button:hover {
+  background-color: var(--color-hover);
+}
+
+.admin-appbar__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.admin-appbar__avatar:hover {
+  transform: scale(1.1);
+}
+
+
+/* === MAIN CONTENT === */
+.admin-main {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--appbar-height);
+  padding: var(--spacing-lg);
+  width: calc(100% - var(--sidebar-width));
+  min-height: calc(100vh - var(--appbar-height));
+  transition: margin-left var(--transition-normal), width var(--transition-normal);
+}
+
+.admin-main__container {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+
+/* === OVERLAY PARA MÓVIL === */
+.admin-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-index-fixed) - 1);
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.admin-overlay--visible {
+  display: block;
+  opacity: 1;
+}
+
+
+/* === RESPONSIVE DESIGN === */
+
+/* Tablets (< 992px) */
+@media (max-width: 992px) {
+  .admin-appbar__search {
+    width: 200px;
+  }
+  
+  .admin-appbar__subtitle {
+    display: none;
+  }
+}
+
+/* Móviles (< 768px) */
+@media (max-width: 768px) {
+  /* Sidebar oculto por defecto en móvil */
+  .admin-sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .admin-sidebar--open {
+    transform: translateX(0);
+  }
+  
+  /* AppBar ocupa todo el ancho */
+  .admin-appbar {
+    left: 0;
+  }
+  
+  /* Main content ocupa todo el ancho */
+  .admin-main {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  /* Mostrar botón de menú hamburguesa */
+  .admin-appbar__menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Ocultar buscador en móvil pequeño */
+  .admin-appbar__search {
+    display: none;
+  }
+  
+  /* Título más pequeño */
+  .admin-appbar__title {
+    font-size: var(--font-size-base);
+  }
+  
+  /* Reducir padding del main */
+  .admin-main {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Móviles pequeños (< 576px) */
+@media (max-width: 576px) {
+  .admin-appbar {
+    padding: 0 var(--spacing-md);
+  }
+  
+  .admin-appbar__brand {
+    margin-right: var(--spacing-md);
+  }
+  
+  .admin-main {
+    padding: var(--spacing-sm);
+  }
+}
