@@ -357,6 +357,19 @@
   animation: fadeIn var(--transition-normal);
 }
 
+.admin-modal__container {
+  position: relative;
+  background-color: var(--color-bg-paper);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: var(--z-index-modal);
+  animation: fadeIn var(--transition-normal);
+}
+
 .admin-modal__header {
   padding: var(--spacing-lg);
   border-bottom: 1px solid var(--color-divider);
@@ -497,4 +510,12 @@
   font-size: var(--font-size-sm);
   color: var(--color-error);
   margin-top: var(--spacing-xs);
+}
+
+
+/* === CARD FOOTER === */
+.admin-card__footer {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-divider);
+  margin-top: var(--spacing-md);
 }
