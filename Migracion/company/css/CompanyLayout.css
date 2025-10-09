@@ -214,10 +214,12 @@
 /* === MAIN CONTENT === */
 .company-main {
   margin-left: var(--sidebar-width);
-  margin-top: var(--appbar-height);
-  padding: var(--spacing-lg);
+  padding-top: calc(var(--appbar-height) + var(--spacing-lg));
+  padding-left: var(--spacing-lg);
+  padding-right: var(--spacing-lg);
+  padding-bottom: var(--spacing-lg);
   width: calc(100% - var(--sidebar-width));
-  min-height: calc(100vh - var(--appbar-height));
+  min-height: 100vh;
   transition: margin-left var(--transition-normal), width var(--transition-normal);
 }
 
@@ -280,6 +282,10 @@
   .company-main {
     margin-left: 0;
     width: 100%;
+    padding-top: calc(var(--appbar-height) + var(--spacing-md));
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
   }
   
   /* Mostrar botón de menú hamburguesa */
@@ -298,11 +304,6 @@
   .company-appbar__title {
     font-size: var(--font-size-base);
   }
-  
-  /* Reducir padding del main */
-  .company-main {
-    padding: var(--spacing-md);
-  }
 }
 
 /* Móviles pequeños (< 576px) */
@@ -316,6 +317,9 @@
   }
   
   .company-main {
-    padding: var(--spacing-sm);
+    padding-top: calc(var(--appbar-height) + var(--spacing-sm));
+    padding-left: var(--spacing-sm);
+    padding-right: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
   }
 }

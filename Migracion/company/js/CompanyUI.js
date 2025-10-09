@@ -341,25 +341,180 @@ const CompanyUI = {
   },
 
   /**
-   * Confirma una acción con el usuario
+   * Confirma una acción con el usuario (Modal personalizado)
    * @param {string} message - Mensaje de confirmación
+   * @param {object} options - Opciones adicionales
    * @returns {Promise<boolean>} true si confirma, false si cancela
    */
-  confirm(message) {
+  confirm(message, options = {}) {
     return new Promise((resolve) => {
-      // Por ahora usamos confirm nativo
-      // TODO: Implementar modal de confirmación personalizado
-      const result = window.confirm(message);
-      resolve(result);
+      const {
+        title = '¿Estás seguro?',
+        confirmText = 'Confirmar',
+        cancelText = 'Cancelar',
+        type = 'warning', // warning, danger, info
+        icon = null,
+      } = options;
+
+      // Crear modal de confirmación
+      const modalId = 'confirmModal_' + Date.now();
+      const modal = document.createElement('div');
+      modal.id = modalId;
+      modal.className = 'company-modal company-modal--open';
+      modal.style.zIndex = '10000';
+
+      // Obtener icono según el tipo
+      const iconSvg = icon || this.getConfirmIcon(type);
+      const iconColor = this.getConfirmColor(type);
+
+      modal.innerHTML = `
+        <div class="company-modal__backdrop" onclick="CompanyUI.resolveConfirm('${modalId}', false)"></div>
+        <div class="company-modal__content" style="max-width: 450px; margin: 37px auto 20px auto; animation: scaleIn 0.3s ease;">
+          <div class="company-modal__body" style="padding: 32px; text-align: center;">
+            <div style="
+              width: 80px;
+              height: 80px;
+              margin: 0 auto 24px;
+              background: ${iconColor}15;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              animation: pulse 2s ease-in-out infinite;
+            ">
+              <div style="color: ${iconColor}; width: 48px; height: 48px;">
+                ${iconSvg}
+              </div>
+            </div>
+
+            <h3 style="
+              font-size: 1.5rem;
+              font-weight: 600;
+              color: #1b1b1f;
+              margin-bottom: 12px;
+            ">${title}</h3>
+
+            <p style="
+              font-size: 1rem;
+              color: #666;
+              line-height: 1.6;
+              margin-bottom: 32px;
+            ">${message}</p>
+
+            <div style="display: flex; gap: 12px; justify-content: center;">
+              <button 
+                class="company-button company-button--outline company-button--lg"
+                onclick="CompanyUI.resolveConfirm('${modalId}', false)"
+                style="min-width: 120px;">
+                ${cancelText}
+              </button>
+              <button 
+                class="company-button company-button--${type === 'danger' ? 'error' : 'primary'} company-button--lg"
+                onclick="CompanyUI.resolveConfirm('${modalId}', true)"
+                style="min-width: 120px;">
+                ${confirmText}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+      document.body.style.overflow = 'hidden';
+
+      // Guardar resolver para uso posterior
+      modal._resolve = resolve;
     });
+  },
+
+  /**
+   * Resuelve el modal de confirmación
+   */
+  resolveConfirm(modalId, result) {
+    const modal = document.getElementById(modalId);
+    if (modal && modal._resolve) {
+      modal._resolve(result);
+      modal.classList.remove('company-modal--open');
+      document.body.style.overflow = '';
+      setTimeout(() => modal.remove(), 300);
+    }
+  },
+
+  /**
+   * Obtiene el icono según el tipo de confirmación
+   */
+  getConfirmIcon(type) {
+    const icons = {
+      warning: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+        </svg>
+      `,
+      danger: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+      `,
+      info: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+        </svg>
+      `,
+    };
+    return icons[type] || icons.warning;
+  },
+
+  /**
+   * Obtiene el color según el tipo de confirmación
+   */
+  getConfirmColor(type) {
+    const colors = {
+      warning: '#ff9800',
+      danger: '#f44336',
+      info: '#2196f3',
+    };
+    return colors[type] || colors.warning;
   },
 };
 
-// Agregar estilos de animación para el loader
+// Agregar estilos de animación
 const style = document.createElement('style');
 style.textContent = `
   @keyframes spin {
     to { transform: rotate(360deg); }
+  }
+
+  @keyframes scaleIn {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 `;
 document.head.appendChild(style);
